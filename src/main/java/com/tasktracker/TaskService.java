@@ -28,11 +28,6 @@ public class TaskService {
     }
 
     public void deleteTask(int id){
-        boolean removed = tasks.removeIf(task -> task.getId() == id);
-        if(removed){
-            System.out.println("Tarefa removida com sucesso!");
-        } else {
-            System.out.println("Tarefa não encontrada");
-        }
+        tasks.remove(id);
     }
 }

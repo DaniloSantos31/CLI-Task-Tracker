@@ -25,16 +25,22 @@ public class Main {
                         System.out.println("Erro, informe a descrição da tarefa.");
                         break;
                     }
-                    taskService.addTask(parts[1]);
-                    System.out.println("Tarefa adicionada com sucesso! Que demais!");
+                    Task task = taskService.addTask(parts[1]);
+                    System.out.println("Tarefa adicionada com sucesso! Que demais! (ID:" + task.getId() + ")");
                     break;
                 case "list":
-                    // listar tarefas
+                    taskService.listTasks();
                     break;
                 case "delete":
-                    //deletar tarefas
+                    if(parts.length < 2){
+                        System.out.println("Informe o ID da tarefa");
+                        break;
+                    }
+                    int id = Integer.parseInt(parts[1]);
+                    taskService.deleteTask(id);
                     break;
                 case "exit":
+                    System.out.println("Encerrando o programa...");
                     run = false;
                     break;
                 default:

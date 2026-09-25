@@ -1,21 +1,33 @@
 package com.tasktracker;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Task {
     private static int idCounter = 1;
     private int id;
     private String description;
     private TaskStatus status;
-    private Instant createAt;
-    private Instant updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Task(String description) {
         this.id = idCounter++;
         this.description = description;
-        this.status = TaskStatus.DONE;
-        this.createAt = Instant.now();
-        this.updatedAt = Instant.now();
+        this.status = TaskStatus.TODO;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    public Task(int id, String description,  TaskStatus status, LocalDateTime createAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+
+        if(id>= idCounter) {
+            idCounter = id + 1;
+        }
     }
 
     public int getId() {
@@ -26,23 +38,27 @@ public class Task {
     }
     public void setDescription(String description){
         this.description = description;
-        this.updatedAt = Instant.now();
+        this.updatedAt = LocalDateTime.now();
     }
-    public String getStatus() {
-        return status.toString();
+    public TaskStatus getStatus() {
+        return status;
     }
     public void setStatus(TaskStatus status){
         this.status = status;
-        this.updatedAt = Instant.now();
+        this.updatedAt = LocalDateTime.now();
     }
-    public Instant getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
-    public Instant getUpdateAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
     @Override
     public String toString() {
-        return "ID: " + id + " - " + description;
+        return "ID: " + id
+                + " | " + description
+                + " | " + status
+                + " | " + createdAt
+                + " | " + updatedAt;
     }
 }

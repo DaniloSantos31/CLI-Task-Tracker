@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskService {
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks;
+
+    private TaskRepository repository;
+
+    public TaskService() {
+        repository = new TaskRepository();
+        tasks = repository.load();
+    }
 
     public Task addTask(String description){
         if(description == null || description.trim().isEmpty()){
@@ -12,6 +19,7 @@ public class TaskService {
         }
         Task newTask = new Task(description);
         tasks.add(newTask);
+        repository.save(tasks);
         return newTask;
     }
 

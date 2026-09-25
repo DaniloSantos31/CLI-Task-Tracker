@@ -44,4 +44,38 @@ public class TaskService {
 
         repository.save(tasks);
     }
+
+    public void listTasksByStatus(TaskStatus status) {
+        boolean found = false;
+
+        System.out.println("-- Lista de tarefas: " + status + " --");
+
+        for (Task task : tasks) {
+            if (task.getStatus() == status) {
+                System.out.println(task);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println(
+                    "Tarefa com status " + status + " não encontrada."
+            );
+        }
+
+        System.out.println("---------------------");
+    }
+
+    public void updateTaskStatus(int id, TaskStatus status){
+        for(Task task : tasks){
+            if(task.getId() == id){
+                task.setStatus(status);
+                repository.save(tasks);
+
+                System.out.println("Status da tarefa " + id + " alterado para " + status);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Tarefa com id:" + id + "não encontrada");
+    }
 }

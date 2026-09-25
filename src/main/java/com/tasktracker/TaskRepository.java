@@ -1,6 +1,5 @@
 package com.tasktracker;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,6 +71,12 @@ public class TaskRepository {
                 .replace("\"", "\\\"");
     }
 
+    private String unescapeJson(String text) {
+        return text
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
+    }
+
     private List<Task> parseJson(String json) {
         List<Task> tasks = new ArrayList<>();
         json = json.trim();
@@ -90,7 +95,7 @@ public class TaskRepository {
                     .replace("]", "")
                     .trim();
 
-            String[] fields = object.split(",\\s*");
+            String[] fields = object.split("");
             int id = 0;
             String description = "";
             TaskStatus status = null;
@@ -108,8 +113,7 @@ public class TaskRepository {
                     id = Integer.parseInt(value);
                 }
                 if (key.equals("description")) {
-                    description = value
-                            .replace("\"", "");
+                    description = unescapeJson(value.replace("\"", ""));
                 }
                 if(key.equals("status")) {
                     status = TaskStatus.valueOf(value.replace("\"", ""));

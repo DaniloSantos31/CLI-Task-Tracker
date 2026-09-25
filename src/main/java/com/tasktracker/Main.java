@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Welcome to TaskTracker");
 
         while(run) {
-            System.out.println("Digite um comando: add[text], delete[id], list, exit.");
+            System.out.println("Digite um comando: add [text], delete [id], status [id] [status], list [status], exit.");
             String input = scanner.nextLine().trim();
             if(input.isEmpty()){
                 continue;
@@ -29,7 +29,17 @@ public class Main {
                     System.out.println("Tarefa adicionada com sucesso! Que demais! (ID:" + task.getId() + ")");
                     break;
                 case "list":
-                    taskService.listTasks();
+                    if(parts.length == 1) {
+                        taskService.listTasks();
+                        break;
+                    }
+
+                    try{
+                        TaskStatus status = TaskStatus.valueOf(parts[1].trim().toUpperCase());
+                        taskService.listTasksByStatus(status);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Status inválido. Use: TODO, IN_PROGRESS ou DONE");
+                    }
                     break;
                 case "delete":
                     if(parts.length < 2 || parts[1].trim().isEmpty()){
@@ -38,6 +48,33 @@ public class Main {
                     }
                     int id = Integer.parseInt(parts[1]);
                     taskService.deleteTask(id);
+                    break;
+                case "status":
+                    if (parts.length < 2) {
+                        System.out.println("Use: status [id] [TODO|IN_PROGRESS|DONE]");
+                        break;
+                    }
+
+                    String[] statusParts = parts[1].trim().split("\\s+");
+
+                    if (statusParts.length != 2) {
+                        System.out.println("Use: status [id] [TODO|IN_PROGRESS|DONE]");
+                        break;
+                    }
+
+                    try {
+                        int taskId = Integer.parseInt(statusParts[0]);
+                        TaskStatus status = TaskStatus.valueOf(statusParts[1].toUpperCase());
+
+                        taskService.updateTaskStatus(taskId, status);
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("O ID deve ser um número.");
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Status inválido. Use TODO, IN_PROGRESS ou DONE.");
+                    }
+
                     break;
                 case "exit":
                     System.out.println("Encerrando o programa...");

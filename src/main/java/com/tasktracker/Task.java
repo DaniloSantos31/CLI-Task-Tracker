@@ -36,10 +36,6 @@ public class Task {
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description){
-        this.description = description;
-        this.updatedAt = LocalDateTime.now();
-    }
     public TaskStatus getStatus() {
         return status;
     }

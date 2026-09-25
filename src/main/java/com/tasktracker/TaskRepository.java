@@ -73,8 +73,8 @@ public class TaskRepository {
 
     private String unescapeJson(String text) {
         return text
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"");
+                .replace("\\\"", "\"")
+                .replace("\\\\", "\\");
     }
 
     private List<Task> parseJson(String json) {
@@ -92,10 +92,9 @@ public class TaskRepository {
             object = object
                     .replace("{", "")
                     .replace("}", "")
-                    .replace("]", "")
                     .trim();
 
-            String[] fields = object.split("");
+            String[] fields = object.split(",\\s*");
             int id = 0;
             String description = "";
             TaskStatus status = null;
@@ -104,29 +103,59 @@ public class TaskRepository {
             for (String field : fields ) {
                 String[] keyValue = field.split(":", 2);
 
+                if(keyValue.length != 2) {
+                    continue;
+                }
+
                 String key = keyValue[0]
                         .trim()
                         .replace("\"", "");
+
                 String value = keyValue[1].trim();
 
-                if(key.equals("id")) {
-                    id = Integer.parseInt(value);
-                }
-                if (key.equals("description")) {
-                    description = unescapeJson(value.replace("\"", ""));
-                }
-                if(key.equals("status")) {
-                    status = TaskStatus.valueOf(value.replace("\"", ""));
-                }
-                if (key.equals("createdAt")) {
-                    createdAt = LocalDateTime.parse(value.replace("\"",""));
-                }
-                if (key.equals("updatedAt")) {
-                    updatedAt = LocalDateTime.parse(value.replace("\"", ""));
+                switch (key) {
+
+                    case "id":
+                        id = Integer.parseInt(value);
+                        break;
+
+                    case "description":
+                        description = unescapeJson(
+                                value.replace("\"", "")
+                        );
+                        break;
+
+                    case "status":
+                        status = TaskStatus.valueOf(
+                                value.replace("\"", "")
+                        );
+                        break;
+
+                    case "createdAt":
+                        createdAt = LocalDateTime.parse(
+                                value.replace("\"", "")
+                        );
+                        break;
+
+                    case "updatedAt":
+                        updatedAt = LocalDateTime.parse(
+                                value.replace("\"", "")
+                        );
+                        break;
                 }
             }
-            tasks.add(new Task(id, description, status, createdAt, updatedAt));
+
+            tasks.add(
+                    new Task(
+                            id,
+                            description,
+                            status,
+                            createdAt,
+                            updatedAt
+                    )
+            );
         }
+
         return tasks;
     }
 }

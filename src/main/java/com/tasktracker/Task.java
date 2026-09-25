@@ -13,7 +13,7 @@ public class Task {
     public Task(String description) {
         this.id = idCounter++;
         this.description = description;
-        this.status = TaskStatus.TODO;
+        this.status = TaskStatus.todo;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
@@ -35,6 +35,10 @@ public class Task {
     }
     public String getDescription() {
         return description;
+    }
+    public void setDescription(String description){
+        this.id = idCounter++;
+        this.description = description;
     }
     public TaskStatus getStatus() {
         return status;

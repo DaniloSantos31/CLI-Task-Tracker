@@ -78,4 +78,17 @@ public class TaskService {
         }
         throw new IllegalArgumentException("Tarefa com id:" + id + "não encontrada");
     }
+
+    public void updateTask(int id, String description){
+        for(Task task : tasks) {
+            if (task.getId() == id) {
+                task.setDescription(description);
+                repository.save(tasks);
+
+            System.out.println("Descrição atualizada!");
+            return;
+        }
+        }
+        throw new IllegalArgumentException("Tarefa com id: " + id + " não encontrada");
+    }
 }

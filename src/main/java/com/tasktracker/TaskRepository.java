@@ -23,15 +23,15 @@ public class TaskRepository {
             json.append("   \"id\": ").append(task.getId()).append(",\n");
             json.append("    \"description\": \"")
                     .append(escapeJson(task.getDescription()))
-                    .append("\"\n");
+                    .append("\",\n");
             json.append("    \"status\": \"")
-                            .append(task.getStatus().name())
-                            .append("\"\n");
-            json.append("    \"createAt\": \"")
-                    .append(task.getCreateAt())
-                    .append("\"\n");
-            json.append("    \"updateAt\": \"")
-                    .append(task.getUpdateAt())
+                            .append(task.getStatus())
+                            .append("\",\n");
+            json.append("    \"createdAt\": \"")
+                    .append(task.getCreatedAt())
+                    .append("\",\n");
+            json.append("    \"updatedAt\": \"")
+                    .append(task.getUpdatedAt())
                     .append("\"\n");
             json.append("  }");
 
@@ -56,7 +56,10 @@ public class TaskRepository {
         }
 
         try {
-            String json = Files.readString(filePath);
+            String json = Files.readString(filePath).trim();
+            if(json.isEmpty() || json.equals("[]")) {
+                return new ArrayList<>();
+            }
             return parseJson(json);
         } catch (IOException e) {
             throw new RuntimeException("Erro ao carregar tarefas ", e);
@@ -83,6 +86,7 @@ public class TaskRepository {
         for  (String object : objects) {
             object = object
                     .replace("{", "")
+                    .replace("}", "")
                     .replace("]", "")
                     .trim();
 

@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Welcome to TaskTracker");
 
         while(run) {
-            System.out.println("Digite um comando: add[text], remove[id], list, exit.");
+            System.out.println("Digite um comando: add[text], delete[id], list, exit.");
             String input = scanner.nextLine().trim();
             if(input.isEmpty()){
                 continue;
@@ -32,7 +32,7 @@ public class Main {
                     taskService.listTasks();
                     break;
                 case "delete":
-                    if(parts.length < 2){
+                    if(parts.length < 2 || parts[1].trim().isEmpty()){
                         System.out.println("Informe o ID da tarefa");
                         break;
                     }

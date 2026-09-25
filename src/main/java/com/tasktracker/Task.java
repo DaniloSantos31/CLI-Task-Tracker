@@ -18,7 +18,7 @@ public class Task {
         this.updatedAt = this.createdAt;
     }
 
-    public Task(int id, String description,  TaskStatus status, LocalDateTime createAt, LocalDateTime updatedAt) {
+    public Task(int id, String description,  TaskStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.status = status;
@@ -56,9 +56,9 @@ public class Task {
     @Override
     public String toString() {
         return "ID: " + id
-                + " | " + description
-                + " | " + status
-                + " | " + createdAt
-                + " | " + updatedAt;
+                + " | description: " + description
+                + " | status: " + status
+                + " | criado em: " + createdAt
+                + " | atualizado em: " + updatedAt;
     }
 }

@@ -36,6 +36,12 @@ public class TaskService {
     }
 
     public void deleteTask(int id){
-        tasks.remove(id);
+        boolean removed = tasks.removeIf(task ->  task.getId() == id);
+
+        if(!removed){
+            throw new IllegalArgumentException("Tarefa não encontrada");
+        }
+
+        repository.save(tasks);
     }
 }
